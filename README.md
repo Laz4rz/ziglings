@@ -45,4 +45,77 @@ const x: u8 = 1
 print("Hello {}", .{x};
 ```
 
-4. 
+4. Arrays
+The Zig arrays have a constant length. The also need to come with type on the right side. Which I do not understand yet. 
+```zig 
+var foo: [3]u32 = [3]u32{1, 2, 3};
+```
+You see how strange? Type on both sides. 
+
+Strangely in the same example, it can also be infered, same as length:
+```zig
+var foo = [_]u32{ 42, 108, 5423 };
+```
+
+Also values can be both accessed and assigned with existing indexes, and their length through `len` method.
+```zig
+foo[2] = 16;;
+const bar = foo[2];
+const length = foo.len;
+```
+
+5. Arrays2
+Zig has "fun" (sic!) array operators. Use `++` to concatenate arays, and `**` to repeat arrays. This only works in comptime, which the time when the program is _being compiled_. 
+
+6. Strings
+Zig strings are just bytes arrays.
+```zig
+const foo = "Hey";
+const boo = [_]u8{'H', 'e', 'y'};
+```
+With the "" -- strings, '' -- characters distinction. 
+
+To correctly print the characters and strings instead of their decimal representation use `u` and `s` inside the print placeholders respectively. This will tell Zig to print them as UTF-8 characters. Using `c` (ASCII characters) will work for the first 128 UTF-8 characters, as they are the same between encodings.
+
+7. Strings2
+Zig has multiline strings. With this strange comment like notation:
+```zig
+const two_lines = 
+	\\ one line
+	\\ two line
+;
+```
+
+8. Quiz
+The idiomatic type for array indexing variables is `usize`. The exact size for this type is CPU architecture dependent.
+
+9. If 
+Zig uses classic comparison operators. The difference with Zig;s if statement is that it wont accept types other than bool. 
+
+```zig
+if some_bool {
+	do_something_1
+} else
+{
+	do_something_2
+}
+```
+
+10. If2
+if statements are also viable in the variable definitions. 
+
+```zig
+const foo: u8 = if (a) 2 else 3;
+```
+
+11. While 
+Vim is starting the infuriate me a little. Zig for some reason has a continue expression statement thats optional for a while loop. Why? It could've just been inside the while??? Either way, continue runs everytime the loop continues. 
+ 
+```zig
+var foo = 2;
+while (foo < 10) : (foo += 2) {
+	do_something()
+}
+```
+
+
