@@ -7,7 +7,7 @@ This is my approach for the Ziglings from www.ziglings.org -- a series of tiny Z
 
 1. Hello
 The structure of a function in Zig is as follows:
-```
+```zig
 fn name() return_type {
 	do_something();
 }
@@ -17,7 +17,7 @@ The functions are private by default, and can be made public by putting `pub` be
 
 2. Std
 Importing is done using:
-```
+```zig
 const foo = @import("foo");
 ```
 
@@ -31,7 +31,7 @@ More about evaluating and compiler checking: https://stackoverflow.com/questions
 
 3. Assignment
 Numerical variables are created with:
-```
+```zig
 const x: u8 = 50;
 var y: i8 = -50;
 ```
@@ -40,7 +40,7 @@ where u -- unsigned, i -- signed, 8 -- number of bits to store the number.
 In this exercise we are asked to fix the mutability of the variable, number of bits and the signed type. 
 
 The print function in Zig takes two parameters. The first is the string, that may contain placeholders for variables {}, and the second is the 'anonymous list literal', which takes variables that will be put into the placeholders.
-```
+```zig
 const x: u8 = 1
 print("Hello {}", .{x};
 ```
