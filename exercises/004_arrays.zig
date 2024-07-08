@@ -1,7 +1,7 @@
 //
 // Let's learn some array basics. Arrays are declared with:
 //
-//   var foo: [3]u32 = [3]u32{ 42, 108, 5423 };
+//   var foo:[3]u32 = [3]u32{ 42, 108, 5423 };
 //
 // When Zig can infer the size of the array, you can use '_' for the
 // size. You can also let Zig infer the type of the value so the
@@ -27,7 +27,7 @@ pub fn main() void {
     // (Problem 1)
     // This "const" is going to cause a problem later - can you see what it is?
     // How do we fix it?
-    const some_primes = [_]u8{ 1, 3, 5, 7, 11, 13, 17, 19 };
+    var some_primes = [_]u8{ 1, 3, 5, 7, 11, 13, 17, 19 };
 
     // Individual values can be set with '[]' notation.
     // Example: This line changes the first prime to 2 (which is correct):
@@ -40,11 +40,11 @@ pub fn main() void {
     // (Problem 2)
     // Looks like we need to complete this expression. Use the example
     // above to set "fourth" to the fourth element of the some_primes array:
-    const fourth = some_primes[???];
+    const fourth = some_primes[3];
 
     // (Problem 3)
     // Use the len property to get the length of the array:
-    const length = some_primes.???;
+    const length = some_primes.len;
 
     std.debug.print("First: {}, Fourth: {}, Length: {}\n", .{
         first, fourth, length,
