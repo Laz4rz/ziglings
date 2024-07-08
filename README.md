@@ -6,6 +6,7 @@ This is my approach for the Ziglings from www.ziglings.org -- a series of tiny Z
 ## Walkthrough
 
 1. Hello
+   
 The structure of a function in Zig is as follows:
 ```zig
 fn name() return_type {
@@ -16,6 +17,7 @@ fn name() return_type {
 The functions are private by default, and can be made public by putting `pub` before `fn`. The main has to be explicitly made public.
 
 2. Std
+  
 Importing is done using:
 ```zig
 const foo = @import("foo");
@@ -30,6 +32,7 @@ Above is why you can define imports as `var`, and if you never use them the comp
 More about evaluating and compiler checking: https://stackoverflow.com/questions/62554187/struct-definition-with-var-instead-of-const-in-zig-language/62567550#62567550
 
 3. Assignment
+
 Numerical variables are created with:
 ```zig
 const x: u8 = 50;
@@ -46,6 +49,7 @@ print("Hello {}", .{x};
 ```
 
 4. Arrays
+
 The Zig arrays have a constant length. The also need to come with type on the right side. Which I do not understand yet. 
 ```zig 
 var foo: [3]u32 = [3]u32{1, 2, 3};
@@ -65,9 +69,11 @@ const length = foo.len;
 ```
 
 5. Arrays2
+
 Zig has "fun" (sic!) array operators. Use `++` to concatenate arays, and `**` to repeat arrays. This only works in comptime, which the time when the program is _being compiled_. 
 
-6. Strings
+7. Strings
+
 Zig strings are just bytes arrays.
 ```zig
 const foo = "Hey";
@@ -78,6 +84,7 @@ With the "" -- strings, '' -- characters distinction.
 To correctly print the characters and strings instead of their decimal representation use `u` and `s` inside the print placeholders respectively. This will tell Zig to print them as UTF-8 characters. Using `c` (ASCII characters) will work for the first 128 UTF-8 characters, as they are the same between encodings.
 
 7. Strings2
+
 Zig has multiline strings. With this strange comment like notation:
 ```zig
 const two_lines = 
@@ -87,9 +94,11 @@ const two_lines =
 ```
 
 8. Quiz
+
 The idiomatic type for array indexing variables is `usize`. The exact size for this type is CPU architecture dependent.
 
-9. If 
+10. If
+
 Zig uses classic comparison operators. The difference with Zig;s if statement is that it wont accept types other than bool. 
 
 ```zig
@@ -102,13 +111,15 @@ if some_bool {
 ```
 
 10. If2
+
 if statements are also viable in the variable definitions. 
 
 ```zig
 const foo: u8 = if (a) 2 else 3;
 ```
 
-11. While 
+11. While
+
 Vim is starting the infuriate me a little. Zig for some reason has a continue expression statement thats optional for a while loop. Why? It could've just been inside the while??? Either way, continue runs everytime the loop continues. 
  
 ```zig
@@ -123,6 +134,7 @@ It can also increment without the :(continue expression).
 Third While exercise: introduces `continue` to skip loop iterations. Fourth does `break`.
 
 15. For
+
 Finally `for` is introduced. Can loop over the array elements:
 
 ```zig
