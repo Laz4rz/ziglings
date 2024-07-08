@@ -226,3 +226,108 @@ To catch the possible errors, and replace them with default action/value use `ca
 const a: u32 = functionThatCanReturnError(10) catch 6.
 ```
 
+Ok, we got to 24. errors4 and I got to say I don't like this one. It's like what is this doing and why would it be doing it that way? Whatever. It introduces the similar to `for` over array items notation with catch.
+
+```zig
+canFail() catch |err| {
+         if (err == FishError.TunaMalfunction) {
+            	do_something() 
+         }
+	do_something_else()
+};
+```
+
+This pattern is so common that it can be shortened with `try`, which will return the correct output or any error the function returns. This allows going from this:
+
+```zig
+fn addFive(n: u32) MyNumberError!u32 {
+    const x = detect(n) catch |err| return err;
+
+    return x + 5;
+}
+```
+
+To this:
+
+```zig
+fn addFive(n: u32) MyNumberError!u32 {
+    const x = try detect(n);	
+    return x + 5;
+}
+```
+
+Now, this was all needed to use the normal way of printing in Zig. Not, the debug print, but the `stdout.print` that can... fail.
+
+26. Hello2 (the one that can fail, and needs handling)
+
+For the first time we will allow the `main` to return an error. The error type will be automatically infered, which is why we change `void` to `!void`. This is appropriate for main, but may either make some other function hard to write or straight up won't be possible (recursion). More information is at: https://ziglang.org/documentation/master/#Inferred-Error-Sets. 
+
+To use the standard library `stdout` we first need to get it. Only then we can use it to write something to the terminal.  
+
+```zig
+const stdout = std.io.getStdOut().writer();
+stdout.print("Hello world!\n", .{});
+```
+
+Why is this dot here????
+
+27. (-29) defer
+
+Funny one, `defer` prepended to a line of code allows to execute it at the END of the block of code. So i.e. you prepend it to the first line and it makes it execute after all the other ones. 
+
+```zig
+pub fn main() void {
+    // Without changing anything else, please add a 'defer' statement
+    // to this code so that our program prints "One Two\n":
+    defer std.debug.print("Two\n", .{});
+    std.debug.print("One ", .{});
+}
+```
+
+Looks to be a really clean way to give certain functions way better readability. If there is a lot of "middle" processing, you can clearly show in the beginning what the function is meant to take in, and give out, and leave the labirinth of middle steps for more careful reading. 
+
+Also an error handling specific `defer` is introduced -- `errdefer`. It does the same thing as `defer`, but only in the case in which the block of code (function) returns an error. Could be used for some kind of cleaning after the error is caught. 
+
+```zig
+fn getNumber(i: usize) MyErr!u32 {
+	errdefer std.debug.print("Oh no I failed you...", .{});
+	var num = try getGetNumber(i);
+	num = try getGetGetNumber(i);
+	// and milion other ways to fail are all caught with our one cool errdefer
+}
+```
+
+30. switch
+
+Zig has switches, so cool. Wonder if it has the same construction switches as Scala, or poor-guys-python-switches. Switch basically let's you shorten the big-ass if constructions:
+
+```zig
+if (x) {
+	doSomething(); // finally switched to correct case for functions
+}
+else if (y) {
+	do2();
+}
+else {
+	do3();
+}
+```
+
+Becomes:
+
+```zig
+switch (c) {
+	x => doSomethings();
+	y => do2;
+	else => do3;
+}
+``` 
+
+A thing of beauty. It can also return stuff:
+
+```zig
+switch (c) {
+	x => "itsX";
+	else => "notX";
+}
+```
