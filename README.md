@@ -118,4 +118,99 @@ while (foo < 10) : (foo += 2) {
 }
 ```
 
+It can also increment without the :(continue expression).
+
+Third While exercise: introduces `continue` to skip loop iterations. Fourth does `break`.
+
+15. For
+Finally `for` is introduced. Can loop over the array elements:
+
+```zig
+for (array) |element| {
+	do_something()
+}
+```
+
+We can also do enumeration with `for` loops to iterate with the index. Vanilla enumeration (range) index will have `usize` type, cause its a default type for indexes as we previously established. If we want to operate with this index on some other number we have to cast it. To cast from usize to int we use `@intCast(i)` -- more later.
+
+```zig
+    for (bits, 0..) |bit, i| {
+        // Note that we convert the usize i to a u32 with
+        // @intCast(), a builtin function just like @import().
+        // We'll learn about these properly in a later exercise.
+        const i_u32: u32 = @intCast(i);
+        const place_value = std.math.pow(u32, 2, i_u32);
+        value += place_value * bit;
+```
+
+@ is used to denote builtin functions.
+
+17. Quiz2
+ 
+Not much. Just previous stuff implemented.
+
+18. Functions
+
+Not main functions incoming -- just define them below main and don't use `pub`. Being private means that the functions is not accesible outside the module (file) in which it's defined.
+
+For a function to take a parameter, define them as:
+
+```zig
+fn twoToThe(my_number: u32) u32 {
+    return std.math.pow(u32, 2, my_number);
+    // std.math.pow(type, a, b) takes a numeric type and two
+    // numbers of that type (or that can coerce to that type) and
+    // returns "a to the power of b" as that same numeric type.
+}
+```
+
+20. Quiz3
+
+Nothing hard again. Just remember that when a function does not return anything, you set the return type as void. 
+
+21. (-25) Errors 
+
+We finally get to the error handling. 
+- error is a value
+- errors are named
+- errors come in "error sets", which are a collection of named errors
+
+Below is the most cumbersome error handling implementation in Zig.
+
+Create an error object, with possible error names. It has to be of type constant.
+```zig
+const NumberError = {
+	TooBig,
+	TooSmall,
+	TooLikeThisNumber,
+	TooBad,
+};
+```
+
+Then we can just return this error as a value from a function or whatever.
+```zig
+fn doILikeThisNumber(n: u8) NumberError {
+	if (n == 3) return NumberError.TooLikeThisNumber;
+	return NumberError.TooBad
+}
+```
+
+And then handle this error, probably later with a `switch` or whatever Zig offers. For now, simply with if comparison.
+```zig
+if doILikeThisNumber(10) == NumberError.TooBad {
+	std.debug.print("Thats not the number I like", .{})
+}
+```
+
+If you want to say that some variable (or function return) will be either something or something else (probably errorType or correctValueType), then you can use `something!somethingElse` notation, which acts as an Union of types. 
+
+```zig
+var my_number: NumberError!u8 = 5;
+```
+
+To catch the possible errors, and replace them with default action/value use `catch`. This function will put 6 in the variable if function returns error
+
+```zig
+const a: u32 = functionThatCanReturnError(10) catch 6.
+```
 
