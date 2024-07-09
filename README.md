@@ -331,3 +331,132 @@ switch (c) {
 	else => "notX";
 }
 ```
+
+31. unreachable
+
+`unreachable` keyword is used to signal that some code branch should never be reacehed, and if it is -- it has to be an error.
+
+32. iferror
+
+Error handling of a function value with `if` and `switch` combine. The `value` and `err` are not keywords, but rather arbitrary variable names. This works cause Zig just has this syntax for error unwraping. I dont know, I dont feel like I like it.
+
+```zig
+for (nums) |num| {
+   std.debug.print("{}", .{num});
+
+    const n = numberMaybeFail(num);
+    if (n) |value| {
+        std.debug.print("={}. ", .{value});
+    } else |err| switch (err) {
+        MyNumberError.TooBig => std.debug.print(">4. ", .{}),
+        MyNumberError.TooSmall => std.debug.print("<4. ", .{})
+    }
+}
+```
+
+33. Quiz 4
+
+Needed this error handling syntax:
+
+```zig
+    if (my_num) |value| {
+        try stdout.print("my_num={}\n", .{value});
+    }
+    else |err| switch (err) {
+        NumError.IllegalNumber => std.debug.print("Dupa", .{}),
+    }
+```
+
+34. (-36) enums
+
+Zig also has enums. You can define a type that can only take predefined values, therefor you do not need to assign arbitrary numbers to represent some operation, you can just name it using an `enum`.
+
+```zig
+const Ops: = enum {inc, dec, pow};
+
+// rest of program
+
+switch (op) {
+Ops.inc => something(),
+// rest
+}
+```
+
+Enums by construction are associated with a number. We can either rely on the automatic assignment (that can be checked with @intFromEnum(MyEnum.foo)), or assign it by hand.
+
+```zig
+const Stuff = enum(u8){ foo = 16, boo = 0x00ff00 } // 0x00ff00 is a hex format, where each two digits represent a bit between 0-255;
+```
+
+Also string formatting that is put inside the format placeholders:
+
+```zig
+    //     {x:0>6}
+    //      ^
+    //      x       type ('x' is lower-case hexadecimal)
+    //       :      separator (needed for format syntax)
+    //        0     padding character (default is ' ')
+    //         >    alignment ('>' aligns right)
+    //          6   width (use padding to force width)
+```
+
+37. (-38) structs
+
+Naturally, after predefined structs (i think they are), like `error` and `enum`, we can also create custom structs. 
+
+```zig
+const Character = struct {
+	role: Role, // defined earlier enum
+	health: u8,
+}
+
+var the_cool_guy = Character{
+	.role = Role.Chad,
+	.health = 100,
+}
+
+the_cool_guy.health -= 5;
+```
+
+We can also add the characters to an array of structs.
+
+```zig
+var chars: [2]Character = undefined; // standard way to define empty variables
+
+chars[0] = Character{
+    .role = Role.wizard,
+    .gold = 20,
+    .health = 100,
+    .experience = 10,
+};
+```
+Now the above array has an undefined value on index 1. If we try to access this struct or its attributes we are going to get some random "garbage" values.
+
+39. (-43) pointers
+
+```zig
+var foo: u8 = 5;      // foo is 5
+var bar: *u8 = &foo;  // bar is a pointer
+const too: u8 = 5;
+const bot: *const u8 = &too; 
+// You can always make a const pointer to a mutable value (var), but
+// you cannot make a var pointer to an immutable value (const).
+// This sounds like a logic puzzle, but it just means that once data
+// is declared immutable, you can't coerce it to a mutable type.
+// Think of mutable data as being volatile or even dangerous. Zig
+// always lets you be "more safe" and never "less safe."
+//     u8         the type of a u8 value
+//     foo        the value 5
+//     *u8        the type of a pointer to a u8 value
+//     &foo       a reference to foo
+//     bar        a pointer to the value at foo
+//     bar.*      the value 5 (the dereferenced value "at" bar)
+
+var boo: u8 = undefined;
+boo = foo.*;
+std.debug.print("{}", .{boo});
+```
+
+
+
+

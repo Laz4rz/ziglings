@@ -9,12 +9,18 @@ const std = @import("std");
 
 const NumError = error{IllegalNumber};
 
-pub fn main() void {
+pub fn main() !void {
     const stdout = std.io.getStdOut().writer();
 
-    const my_num: u32 = getNumber();
+    const my_num = getNumber();
 
-    try stdout.print("my_num={}\n", .{my_num});
+    if (my_num) |value| {
+        try stdout.print("my_num={}\n", .{value});
+    }
+    else |err| switch (err) {
+        NumError.IllegalNumber => std.debug.print("Dupa", .{}),
+    }
+
 }
 
 // This function is obviously weird and non-functional. But you will not be changing it for this quiz.

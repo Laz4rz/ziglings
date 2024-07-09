@@ -31,7 +31,7 @@ const std = @import("std");
 const Color = enum(u32) {
     red = 0xff0000,
     green = 0x00ff00,
-    blue = ???,
+    blue = 0x0000ff,
 };
 
 pub fn main() void {
@@ -53,12 +53,12 @@ pub fn main() void {
         \\<p>
         \\  <span style="color: #{x:0>6}">Red</span>
         \\  <span style="color: #{x:0>6}">Green</span>
-        \\  <span style="color: #{}">Blue</span>
+        \\  <span style="color: #{x:0>6}">Blue</span>
         \\</p>
         \\
     , .{
         @intFromEnum(Color.red),
         @intFromEnum(Color.green),
-        @intFromEnum(???), // Oops! We're missing something!
+        @intFromEnum(Color.blue), // Oops! We're missing something!
     });
 }
