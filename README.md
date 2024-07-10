@@ -457,6 +457,28 @@ boo = foo.*;
 std.debug.print("{}", .{boo});
 ```
 
+Ok now I know whats the deal with constant pointer types.
+
+```zig
+var   foo: u8 = 5;
+const boo: u8 = 2;
+
+var vpfoo: *u8 = &foo;          // pointer to the foo address, can be changed to point to another variable, can be used to change the value of foo
+const cpfoo: *u8 = &foo;        // pointer to the foo address, can not be changed to point to another variable, can be used to change the value of foo
+var cvpfoo: *const u8 = &foo;   // pointer to the foo address, can be changed to point to another variable, can not be used to change the value of foo
+const ccpfoo: *const u8 = &foo; // pointer to the foo address, can not be changed to point to another variable, can not be used to change the value of foo
+
+var vpboo: *u8 = &boo;          // can not be created, would result in a mutable value when dereferencing which would contradict the const type of boo
+const cpboo: *u8 = &boo;	// also can not be created, would result in an immutable pointer, but mutable dereference, also contradicts
+var cvpboo: *const u8 = &boo;   // pointer to the boo address, can be changed to point to another variable, can not be used to change the value of boo
+const ccpboo: *const u8 = &boo; // pointer to the boo address, can not be changed to point to another variable, can not be used to change the value of boo
+```
+
+Writing this took my 10 minutes, and I think it's the most I learned about pointers since highschool.
+
+```zig
+var x: u8 = 5;
+var px: *u8 = &x;
 
 
-
+```
