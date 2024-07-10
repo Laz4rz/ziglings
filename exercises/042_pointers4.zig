@@ -30,12 +30,14 @@ pub fn main() void {
     for (more_nums) |n| {
         std.debug.print("{} ", .{n});
     }
-
+    //const p: *u8 = &num;
     std.debug.print("\n", .{});
+    //std.debug.print("{}\n", .{&p});
+    //std.debug.print("{}\n", .{p});
 }
 
 // This function should take a reference to a u8 value and set it
 // to 5.
 fn makeFive(x: *u8) void {
-    x = 5; // fix me!
+    x.* = 5; // fix me!
 }

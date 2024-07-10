@@ -480,5 +480,64 @@ Writing this took my 10 minutes, and I think it's the most I learned about point
 var x: u8 = 5;
 var px: *u8 = &x;
 
-
+// px   -- address of x
+// &px  -- address of px 
+// px.* -- accessed variable x (dereferenced), can be used to write if not *const pointer type 
 ```
+
+We can also combine pointers with structs. Important remark is that counterintuitively we do not need to dereference the struct pointer to access it's elements. 
+
+```zig
+// YES: my_struct_pointer.x 
+// NO:  my_struct_pointer.*.x
+
+const Class = enum {
+	wizard,
+	knight,
+	bard,
+}
+
+const Character = struct {
+	class: Class,
+	gold: u32,
+	health: u8 = 100,
+	experience: u32,
+	// we can also mention a mentor of this character, but he can also be non-existent
+	// so we can type a pointer to a struct as *Struct
+	// and to allow it to be null, we have to add ? before it, why not undefined instead of null???
+	mentor ?*Character = null,
+}
+
+var crodor = ...
+
+var glorp = Character {
+	.class      = Class.wizard,
+	.gold       = 100,
+	.experience = 20,
+	.mentor     = &krodor // some other character idc  
+}
+
+// then we can pass a pointer to this character to a function as c and use it, for example:
+// notice how we do not need to specify enum name for each of enum values
+const class_name = switch (c.class) {
+    .wizard => "Wizard",
+    .thief => "Thief",
+    .bard => "Bard",
+    .warrior => "Warrior",
+};
+```
+
+We can also check if value is not `null`, with the funny if error notation seen previously.
+
+```zig
+if (c.mentor) |mentor| {
+	std.debug.print("Mentor: ", .{});
+	printCharacter(mentor); // some function to parse and print the Character struct
+}
+```
+
+44. Quiz5
+
+Quicky  introduction of linked lists, by elephants holding tails -- cute. 
+
+45. 
