@@ -538,6 +538,27 @@ if (c.mentor) |mentor| {
 
 44. Quiz5
 
-Quicky  introduction of linked lists, by elephants holding tails -- cute. 
+Quicky introduction of linked lists, by elephants holding tails -- cute. 
 
-45. 
+45. optionals
+
+Zig allows creating optionals -- variables that can either hold some value or a `null`. 
+
+```zig
+var foo: ?u32 = 10;
+foo = null; 
+
+var boo = foo orelse 2; 
+// this will either assign value if foo is not null
+// or 2 by default if foo is null
+// therefore we can be sure that boo is now u32 type
+```  
+
+The optionals are similar to union of error!type variable. 
+
+```zig
+var maybe_bad: Error!u32 = Error.Evil;
+var number: u32 = maybe_bad catch 0;
+```
+
+46. 
