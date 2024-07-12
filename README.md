@@ -540,7 +540,7 @@ if (c.mentor) |mentor| {
 
 Quicky introduction of linked lists, by elephants holding tails -- cute. 
 
-45. optionals
+45. (-46) optionals
 
 Zig allows creating optionals -- variables that can either hold some value or a `null`. 
 
@@ -552,6 +552,10 @@ var boo = foo orelse 2;
 // this will either assign value if foo is not null
 // or 2 by default if foo is null
 // therefore we can be sure that boo is now u32 type
+
+var coo = foo.?; 
+// short for `orelse unreachable`
+// i guess its for when we really need  this value
 ```  
 
 The optionals are similar to union of error!type variable. 
@@ -561,4 +565,40 @@ var maybe_bad: Error!u32 = Error.Evil;
 var number: u32 = maybe_bad catch 0;
 ```
 
-46. 
+46. (-47) methods
+
+Zig structs can have methods attached to them (almost classes, almost). You create them by:
+
+```zig
+const Foo = struct {
+	pub fn hello() void }
+		std.debug.print("Hello from Foo\n", .{});
+	}
+}
+
+Foo.hello(); 
+// method is defined inside the Foo namespace
+// which is why it's called with namespace.method
+```  
+
+If the first argument of the method is of the namespace type (ie. struct) or a pointer to it, then it acts as `self` keyword and allows self-calling on variable of this type.
+
+```zig
+const Bar = struct{
+	pub fn a(self: Bar) void {}
+	pub fn b(this: *Bar, other: u8) void {}
+	pub fn c(bar: *const Bar) void {}
+ };
+// there is no one way of naming it
+// three notations above are popular
+
+var bar = Bar{};
+bar.a()  // is equivalent to Bar.a(bar)
+bar.b(3) // is equivalent to Bar.b(&bar, 3)
+bar.c()  // is equivalent to Bar.c(&bar)
+```
+
+
+
+
+
