@@ -818,3 +818,26 @@ fn func(arg: u8) void {
 ```
 
 Really last thing. There are 3 types of memory allocated for programs: data segments (compile time, global and static stuff), stack (allocated at run time, fast, dynamic, but limited by system dependent memory size), and the heap (unlimited allocation up to RAM size, slower than stack, can lead to memory leaks if not handled properly).
+
+52. (-53) slices
+
+Slices are arrays of an undefined length. They are useful for example in functions, where we dont know what length the array we want to pass is. The type for slices instead of ie. `[10]u8` for 10 u8 elements is `[]u8` -- we define that it's an array and specify element types, but we don't tell what is the length. Slices also allow taking a... slice from an array. 
+
+```zig
+var arr = [3]u8{ 0, 1, 2 };
+const foo = arr[0..1]; // 0
+const boo = arr[0..]; // 0, 1, 2    
+```
+
+Under the hood slices are stored as first item and the length.
+
+We can also manipulate strings, which after all are arrays too. IMMUTABLE arrays mind you. Which is why, we need to specify that in the type of slice `[]const u8`.
+
+```zig
+const scrambled = "some string hey";
+const part1: []const u8 = scrambled[0..10];
+```
+
+
+
+
