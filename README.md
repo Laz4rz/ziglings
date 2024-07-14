@@ -6,7 +6,7 @@ This is my approach for the Ziglings from www.ziglings.org -- a series of tiny Z
 ## Walkthrough
 
 1. Hello
-   
+
 The structure of a function in Zig is as follows:
 ```zig
 fn name() return_type {
@@ -17,7 +17,7 @@ fn name() return_type {
 The functions are private by default, and can be made public by putting `pub` before `fn`. The main has to be explicitly made public.
 
 2. Std
-  
+
 Importing is done using:
 ```zig
 const foo = @import("foo");
@@ -38,9 +38,9 @@ Numerical variables are created with:
 const x: u8 = 50;
 var y: i8 = -50;
 ```
-where u -- unsigned, i -- signed, 8 -- number of bits to store the number. 
+where u -- unsigned, i -- signed, 8 -- number of bits to store the number.
 
-In this exercise we are asked to fix the mutability of the variable, number of bits and the signed type. 
+In this exercise we are asked to fix the mutability of the variable, number of bits and the signed type.
 
 The print function in Zig takes two parameters. The first is the string, that may contain placeholders for variables {}, and the second is the 'anonymous list literal', which takes variables that will be put into the placeholders.
 ```zig
@@ -50,11 +50,11 @@ print("Hello {}", .{x};
 
 4. Arrays
 
-The Zig arrays have a constant length. The also need to come with type on the right side. Which I do not understand yet. 
-```zig 
+The Zig arrays have a constant length. The also need to come with type on the right side. Which I do not understand yet.
+```zig
 var foo: [3]u32 = [3]u32{1, 2, 3};
 ```
-You see how strange? Type on both sides. 
+You see how strange? Type on both sides.
 
 Strangely in the same example, it can also be infered, same as length:
 ```zig
@@ -70,7 +70,7 @@ const length = foo.len;
 
 5. Arrays2
 
-Zig has "fun" (sic!) array operators. Use `++` to concatenate arays, and `**` to repeat arrays. This only works in comptime, which the time when the program is _being compiled_. 
+Zig has "fun" (sic!) array operators. Use `++` to concatenate arays, and `**` to repeat arrays. This only works in comptime, which the time when the program is _being compiled_.
 
 7. Strings
 
@@ -79,7 +79,7 @@ Zig strings are just bytes arrays.
 const foo = "Hey";
 const boo = [_]u8{'H', 'e', 'y'};
 ```
-With the "" -- strings, '' -- characters distinction. 
+With the "" -- strings, '' -- characters distinction.
 
 To correctly print the characters and strings instead of their decimal representation use `u` and `s` inside the print placeholders respectively. This will tell Zig to print them as UTF-8 characters. Using `c` (ASCII characters) will work for the first 128 UTF-8 characters, as they are the same between encodings.
 
@@ -87,7 +87,7 @@ To correctly print the characters and strings instead of their decimal represent
 
 Zig has multiline strings. With this strange comment like notation:
 ```zig
-const two_lines = 
+const two_lines =
 	\\ one line
 	\\ two line
 ;
@@ -99,7 +99,7 @@ The idiomatic type for array indexing variables is `usize`. The exact size for t
 
 10. If
 
-Zig uses classic comparison operators. The difference with Zig;s if statement is that it wont accept types other than bool. 
+Zig uses classic comparison operators. The difference with Zig;s if statement is that it wont accept types other than bool.
 
 ```zig
 if some_bool {
@@ -112,7 +112,7 @@ if some_bool {
 
 10. If2
 
-if statements are also viable in the variable definitions. 
+if statements are also viable in the variable definitions.
 
 ```zig
 const foo: u8 = if (a) 2 else 3;
@@ -120,8 +120,8 @@ const foo: u8 = if (a) 2 else 3;
 
 11. While
 
-Vim is starting the infuriate me a little. Zig for some reason has a continue expression statement thats optional for a while loop. Why? It could've just been inside the while??? Either way, continue runs everytime the loop continues. 
- 
+Vim is starting the infuriate me a little. Zig for some reason has a continue expression statement thats optional for a while loop. Why? It could've just been inside the while??? Either way, continue runs everytime the loop continues.
+
 ```zig
 var foo = 2;
 while (foo < 10) : (foo += 2) {
@@ -158,7 +158,7 @@ We can also do enumeration with `for` loops to iterate with the index. Vanilla e
 @ is used to denote builtin functions.
 
 17. Quiz2
- 
+
 Not much. Just previous stuff implemented.
 
 18. Functions
@@ -178,11 +178,11 @@ fn twoToThe(my_number: u32) u32 {
 
 20. Quiz3
 
-Nothing hard again. Just remember that when a function does not return anything, you set the return type as void. 
+Nothing hard again. Just remember that when a function does not return anything, you set the return type as void.
 
-21. (-25) Errors 
+21. (-25) Errors
 
-We finally get to the error handling. 
+We finally get to the error handling.
 - error is a value
 - errors are named
 - errors come in "error sets", which are a collection of named errors
@@ -214,7 +214,7 @@ if doILikeThisNumber(10) == NumberError.TooBad {
 }
 ```
 
-If you want to say that some variable (or function return) will be either something or something else (probably errorType or correctValueType), then you can use `something!somethingElse` notation, which acts as an Union of types. 
+If you want to say that some variable (or function return) will be either something or something else (probably errorType or correctValueType), then you can use `something!somethingElse` notation, which acts as an Union of types.
 
 ```zig
 var my_number: NumberError!u8 = 5;
@@ -231,7 +231,7 @@ Ok, we got to 24. errors4 and I got to say I don't like this one. It's like what
 ```zig
 canFail() catch |err| {
          if (err == FishError.TunaMalfunction) {
-            	do_something() 
+            	do_something()
          }
 	do_something_else()
 };
@@ -251,7 +251,7 @@ To this:
 
 ```zig
 fn addFive(n: u32) MyNumberError!u32 {
-    const x = try detect(n);	
+    const x = try detect(n);
     return x + 5;
 }
 ```
@@ -260,9 +260,9 @@ Now, this was all needed to use the normal way of printing in Zig. Not, the debu
 
 26. Hello2 (the one that can fail, and needs handling)
 
-For the first time we will allow the `main` to return an error. The error type will be automatically infered, which is why we change `void` to `!void`. This is appropriate for main, but may either make some other function hard to write or straight up won't be possible (recursion). More information is at: https://ziglang.org/documentation/master/#Inferred-Error-Sets. 
+For the first time we will allow the `main` to return an error. The error type will be automatically infered, which is why we change `void` to `!void`. This is appropriate for main, but may either make some other function hard to write or straight up won't be possible (recursion). More information is at: https://ziglang.org/documentation/master/#Inferred-Error-Sets.
 
-To use the standard library `stdout` we first need to get it. Only then we can use it to write something to the terminal.  
+To use the standard library `stdout` we first need to get it. Only then we can use it to write something to the terminal.
 
 ```zig
 const stdout = std.io.getStdOut().writer();
@@ -273,7 +273,7 @@ Why is this dot here????
 
 27. (-29) defer
 
-Funny one, `defer` prepended to a line of code allows to execute it at the END of the block of code. So i.e. you prepend it to the first line and it makes it execute after all the other ones. 
+Funny one, `defer` prepended to a line of code allows to execute it at the END of the block of code. So i.e. you prepend it to the first line and it makes it execute after all the other ones.
 
 ```zig
 pub fn main() void {
@@ -284,9 +284,9 @@ pub fn main() void {
 }
 ```
 
-Looks to be a really clean way to give certain functions way better readability. If there is a lot of "middle" processing, you can clearly show in the beginning what the function is meant to take in, and give out, and leave the labirinth of middle steps for more careful reading. 
+Looks to be a really clean way to give certain functions way better readability. If there is a lot of "middle" processing, you can clearly show in the beginning what the function is meant to take in, and give out, and leave the labirinth of middle steps for more careful reading.
 
-Also an error handling specific `defer` is introduced -- `errdefer`. It does the same thing as `defer`, but only in the case in which the block of code (function) returns an error. Could be used for some kind of cleaning after the error is caught. 
+Also an error handling specific `defer` is introduced -- `errdefer`. It does the same thing as `defer`, but only in the case in which the block of code (function) returns an error. Could be used for some kind of cleaning after the error is caught.
 
 ```zig
 fn getNumber(i: usize) MyErr!u32 {
@@ -321,7 +321,7 @@ switch (c) {
 	y => do2;
 	else => do3;
 }
-``` 
+```
 
 A thing of beauty. It can also return stuff:
 
@@ -402,7 +402,7 @@ Also string formatting that is put inside the format placeholders:
 
 37. (-38) structs
 
-Naturally, after predefined structs (i think they are), like `error` and `enum`, we can also create custom structs. 
+Naturally, after predefined structs (i think they are), like `error` and `enum`, we can also create custom structs.
 
 ```zig
 const Character = struct {
@@ -438,7 +438,7 @@ Now the above array has an undefined value on index 1. If we try to access this 
 var foo: u8 = 5;      // foo is 5
 var bar: *u8 = &foo;  // bar is a pointer
 const too: u8 = 5;
-const bot: *const u8 = &too; 
+const bot: *const u8 = &too;
 // You can always make a const pointer to a mutable value (var), but
 // you cannot make a var pointer to an immutable value (const).
 // This sounds like a logic puzzle, but it just means that once data
@@ -481,14 +481,14 @@ var x: u8 = 5;
 var px: *u8 = &x;
 
 // px   -- address of x
-// &px  -- address of px 
-// px.* -- accessed variable x (dereferenced), can be used to write if not *const pointer type 
+// &px  -- address of px
+// px.* -- accessed variable x (dereferenced), can be used to write if not *const pointer type
 ```
 
-We can also combine pointers with structs. Important remark is that counterintuitively we do not need to dereference the struct pointer to access it's elements. 
+We can also combine pointers with structs. Important remark is that counterintuitively we do not need to dereference the struct pointer to access it's elements.
 
 ```zig
-// YES: my_struct_pointer.x 
+// YES: my_struct_pointer.x
 // NO:  my_struct_pointer.*.x
 
 const Class = enum {
@@ -514,7 +514,7 @@ var glorp = Character {
 	.class      = Class.wizard,
 	.gold       = 100,
 	.experience = 20,
-	.mentor     = &krodor // some other character idc  
+	.mentor     = &krodor // some other character idc
 }
 
 // then we can pass a pointer to this character to a function as c and use it, for example:
@@ -538,27 +538,27 @@ if (c.mentor) |mentor| {
 
 44. Quiz5
 
-Quicky introduction of linked lists, by elephants holding tails -- cute. 
+Quicky introduction of linked lists, by elephants holding tails -- cute.
 
 45. (-46) optionals
 
-Zig allows creating optionals -- variables that can either hold some value or a `null`. 
+Zig allows creating optionals -- variables that can either hold some value or a `null`.
 
 ```zig
 var foo: ?u32 = 10;
-foo = null; 
+foo = null;
 
-var boo = foo orelse 2; 
+var boo = foo orelse 2;
 // this will either assign value if foo is not null
 // or 2 by default if foo is null
 // therefore we can be sure that boo is now u32 type
 
-var coo = foo.?; 
+var coo = foo.?;
 // short for `orelse unreachable`
 // i guess its for when we really need  this value
-```  
+```
 
-The optionals are similar to union of error!type variable. 
+The optionals are similar to union of error!type variable.
 
 ```zig
 var maybe_bad: Error!u32 = Error.Evil;
@@ -576,10 +576,10 @@ const Foo = struct {
 	}
 }
 
-Foo.hello(); 
+Foo.hello();
 // method is defined inside the Foo namespace
 // which is why it's called with namespace.method
-```  
+```
 
 If the first argument of the method is of the namespace type (ie. struct) or a pointer to it, then it acts as `self` keyword and allows self-calling on variable of this type.
 
@@ -598,7 +598,223 @@ bar.b(3) // is equivalent to Bar.b(&bar, 3)
 bar.c()  // is equivalent to Bar.c(&bar)
 ```
 
+Method a: Pass by Value
+
+The entire Bar struct is copied when the method is called.
+Changes to self inside the method don't affect the original Bar instance.
+Use this when you don't need to modify the struct and it's small enough that copying is not a performance concern.
 
 
+Method b: Mutable Pointer
+
+Passes a pointer to the Bar instance, allowing modifications to the original struct.
+More efficient for large structs as it avoids copying.
+Use this when you need to modify the struct's fields.
 
 
+Method c: Const Pointer
+
+Passes a pointer to the Bar instance, but doesn't allow modifications.
+Efficient like b, but ensures the method doesn't change the struct.
+Use this when you need to read from a large struct but want to ensure it's not modified.
+
+Enums can also have methods.
+
+```zig
+pub const FileExt = enum {
+    c,
+    cpp,
+    h,
+    ll,
+    bc,
+    assembly,
+    shared_library,
+    object,
+    static_library,
+    zig,
+    zir,
+    unknown,
+
+    pub fn clangSupportsDepFile(ext: FileExt) bool {
+        return switch (ext) {
+            .c, .cpp, .h => true,
+
+            .ll,
+            .bc,
+            .assembly,
+            .shared_library,
+            .object,
+            .static_library,
+            .zig,
+            .zir,
+            .unknown,
+            => false,
+        };
+    }
+};
+```
+
+50. Quiz 6
+
+We are finally writing something ourselves. Just replicate the tail methods and you're good. Also, I managed to finally turn on vim zig and markdown highlighting -- noice.
+
+51. no value
+
+```zig
+// Zig has at least four ways of expressing "no value":
+//
+// * undefined
+//
+//       var foo: u8 = undefined;
+//
+//       "undefined" should not be thought of as a value, but as a way
+//       of telling the compiler that you are not assigning a value
+//       _yet_. Any type may be set to undefined, but attempting
+//       to read or use that value is _always_ a mistake.
+//
+// * null
+//
+//       var foo: ?u8 = null;
+//
+//       The "null" primitive value _is_ a value that means "no value".
+//       This is typically used with optional types as with the ?u8
+//       shown above. When foo equals null, that's not a value of type
+//       u8. It means there is _no value_ of type u8 in foo at all!
+//
+// * error
+//
+//       var foo: MyError!u8 = BadError;
+//
+//       Errors are _very_ similar to nulls. They _are_ a value, but
+//       they usually indicate that the "real value" you were looking
+//       for does not exist. Instead, you have an error. The example
+//       error union type of MyError!u8 means that foo either holds
+//       a u8 value OR an error. There is _no value_ of type u8 in foo
+//       when it's set to an error!
+//
+// * void
+//
+//       var foo: void = {};
+//
+//       "void" is a _type_, not a value. It is the most popular of the
+//       Zero Bit Types (those types which take up absolutely no space
+//       and have only a semantic value. When compiled to executable
+//       code, zero bit types generate no code at all. The above example
+//       shows a variable foo of type void which is assigned the value
+//       of an empty expression. It's much more common to see void as
+//       the return type of a function that returns nothing.
+//
+// Zig has all of these ways of expressing different types of "no value"
+// because they each serve a purpose. Briefly:
+//
+//   * undefined - there is no value YET, this cannot be read YET
+//   * null      - there is an explicit value of "no value"
+//   * errors    - there is no value because something went wrong
+//   * void      - there will NEVER be a value stored here
+```
+
+51. values (or how memory works for stuff)
+
+This is a deep dive. These is not a killing house anymore. We are getting TO IT.
+
+`@import()` that you use to import standard library for example is a way of telling the compiler to smash all of standard's library code together with your code to RAM while running the program. `const std` that keeps the import is just a struct.
+
+Structs are built with fields (or methods too, but thats not important right now). Structs are not some abstract beings, if you add the memory taken by all struct's fields, you will know how much memory the struct takes.
+
+Structs can be created in different ways.The narrator is created as a constant variable. The memory address of this structure will not change while the program runs, also none of the vields values will change, as it is initialized as a constant.
+
+```zig
+const the_narrator = Character{
+    .gold = 12,
+    .health = 99,
+    .experience = 9000,
+};
+```
+
+When you create a struct using `var`, you get a struct with still constant memory address, but the fields' values themselves can be changed.
+
+```zig
+var global_wizard{};
+```
+
+Functions on the other hand are kept as instruction codes at particular address. Function parameters are always immutable, and are stored in "the stack". The stack is a specific part of RAM that is reserved for the program you're running. CPU has special methods for adding/taking stuff from the stack, so it makes it really efficient. When the function executes, the parameters are often loaded to even faster memory -- CPU registers.
+
+When we define a function, ie. `main` with no parameters, it will have a stack entry called "frame".
+
+```zig
+pub fn main() void {
+    var glorp = Character{
+    .gold = 30,
+    };
+
+    // according to ziglings note
+    // glorp will be kept on the stack
+    // "each instance of glorp is mutable and.."
+    // "..therefore unique to the invocation of this fn"
+    // it does not really sound like an explanation
+
+    // ok i got it now, each time a function is called
+    // ie by a new thread, a new frame is created on
+    // te stack for it, in this frame a new instance of
+    // glorp is created, so we avoid a situation in which
+    // other caller changed some value of glorp (var -- mutable)
+    // and the new caller would get the changed value
+
+    const reward_xp: u32 = 200;
+
+    // reward_xp on the other hand is constant, he does
+    // not need to be copied and kept on stack, cause
+    // no function call (thread, whatever) will change
+    // him, its up to compiler where to put him -- either
+    // in the global memory or inlince, FUSED into the
+    // generated code
+
+    const print = std.debug.print
+
+    // as we said before, std is just some struct
+    // debug is also a struct, just nested in std
+    // print is a public function in the namespace of
+    // that struct, we can just assign this function
+    // to a new const
+}
+```
+
+We will now look at different ways of assigning existing variables to new ones. When do we pass the same object in memory? When do we make a copy?
+
+```zig
+var glorp_access1: Character = glorp;
+glorp_access1.gold = 111;
+```
+
+Above creates a copy. You can see it by changing a value after assigning to new name. The two variables will have different values if you change the value for one of them.
+
+```zig
+var glorp_access2: *Character = &glorp;
+glorp_access2.gold = 222;
+```
+
+Now we created a proper link to an object. This variable is nothing more than just the original glorp in disguise. If you now change the value of some field, it will be changed for the original glorp as well.
+
+```zig
+const glorp_access3: *Character = &glorp;
+glorp_access3.gold = 222;
+```
+
+Now we get back to the pointer differences we've talked when doing pointer exercises. `const` pointer variable means that we can't change what the pointer variable is pointing at, but we can still change the values of the variable we point at.
+
+```zig
+const glorp_access4: *const Character = &glorp;
+glorp_access4 = 111;
+```
+
+Now this would result in an error. If we make the pointer type `consgt` as well, it means we only create a window that we can use to look at the original value. We can't do anything with it. It's like a zoo.
+
+Last thing here: when arguments are passed to the function, they are always initialized as constant values. We can't reassign values to  function parameter variable.
+
+```zig
+fn func(arg: u8) void {
+    arg = 42; // will result in an error
+}
+```
+
+Really last thing. There are 3 types of memory allocated for programs: data segments (compile time, global and static stuff), stack (allocated at run time, fast, dynamic, but limited by system dependent memory size), and the heap (unlimited allocation up to RAM size, slower than stack, can lead to memory leaks if not handled properly).
