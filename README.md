@@ -52,6 +52,8 @@ const x: u8 = 1
 print("Hello {}", .{x};
 ```
 
+---
+
 4. Arrays
 
 The Zig arrays have a constant length. The also need to come with type on the right side. Which I do not understand yet.
@@ -72,9 +74,13 @@ const bar = foo[2];
 const length = foo.len;
 ```
 
+---
+
 5. Arrays2
 
 Zig has "fun" (sic!) array operators. Use `++` to concatenate arays, and `**` to repeat arrays. This only works in comptime, which the time when the program is _being compiled_.
+
+---
 
 7. Strings
 
@@ -87,7 +93,9 @@ With the "" -- strings, '' -- characters distinction.
 
 To correctly print the characters and strings instead of their decimal representation use `u` and `s` inside the print placeholders respectively. This will tell Zig to print them as UTF-8 characters. Using `c` (ASCII characters) will work for the first 128 UTF-8 characters, as they are the same between encodings.
 
-7. Strings2
+---
+
+8. Strings2
 
 Zig has multiline strings. With this strange comment like notation:
 ```zig
@@ -97,9 +105,13 @@ const two_lines =
 ;
 ```
 
-8. Quiz
+--- 
+
+9. Quiz
 
 The idiomatic type for array indexing variables is `usize`. The exact size for this type is CPU architecture dependent.
+
+---
 
 10. If
 
@@ -114,7 +126,9 @@ if some_bool {
 }
 ```
 
-10. If2
+---
+
+11. If2
 
 if statements are also viable in the variable definitions.
 
@@ -122,7 +136,7 @@ if statements are also viable in the variable definitions.
 const foo: u8 = if (a) 2 else 3;
 ```
 
-11. While
+12. While
 
 Vim is starting the infuriate me a little. Zig for some reason has a continue expression statement thats optional for a while loop. Why? It could've just been inside the while??? Either way, continue runs everytime the loop continues.
 
@@ -136,6 +150,8 @@ while (foo < 10) : (foo += 2) {
 It can also increment without the :(continue expression).
 
 Third While exercise: introduces `continue` to skip loop iterations. Fourth does `break`.
+
+--- 
 
 15. For
 
@@ -161,9 +177,13 @@ We can also do enumeration with `for` loops to iterate with the index. Vanilla e
 
 @ is used to denote builtin functions.
 
+---
+
 17. Quiz2
 
 Not much. Just previous stuff implemented.
+
+---
 
 18. Functions
 
@@ -180,9 +200,13 @@ fn twoToThe(my_number: u32) u32 {
 }
 ```
 
+---
+
 20. Quiz3
 
 Nothing hard again. Just remember that when a function does not return anything, you set the return type as void.
+
+---
 
 21. (-25) Errors
 
@@ -262,6 +286,8 @@ fn addFive(n: u32) MyNumberError!u32 {
 
 Now, this was all needed to use the normal way of printing in Zig. Not, the debug print, but the `stdout.print` that can... fail.
 
+---
+
 26. Hello2 (the one that can fail, and needs handling)
 
 For the first time we will allow the `main` to return an error. The error type will be automatically infered, which is why we change `void` to `!void`. This is appropriate for main, but may either make some other function hard to write or straight up won't be possible (recursion). More information is at: https://ziglang.org/documentation/master/#Inferred-Error-Sets.
@@ -274,6 +300,8 @@ stdout.print("Hello world!\n", .{});
 ```
 
 Why is this dot here????
+
+---
 
 27. (-29) defer
 
@@ -300,6 +328,8 @@ fn getNumber(i: usize) MyErr!u32 {
 	// and milion other ways to fail are all caught with our one cool errdefer
 }
 ```
+
+---
 
 30. switch
 
@@ -336,9 +366,13 @@ switch (c) {
 }
 ```
 
+---
+
 31. unreachable
 
 `unreachable` keyword is used to signal that some code branch should never be reacehed, and if it is -- it has to be an error.
+
+---
 
 32. iferror
 
@@ -358,6 +392,8 @@ for (nums) |num| {
 }
 ```
 
+---
+
 33. Quiz 4
 
 Needed this error handling syntax:
@@ -370,6 +406,8 @@ Needed this error handling syntax:
         NumError.IllegalNumber => std.debug.print("Dupa", .{}),
     }
 ```
+
+---
 
 34. (-36) enums
 
@@ -404,6 +442,8 @@ Also string formatting that is put inside the format placeholders:
     //          6   width (use padding to force width)
 ```
 
+---
+
 37. (-38) structs
 
 Naturally, after predefined structs (i think they are), like `error` and `enum`, we can also create custom structs.
@@ -435,6 +475,8 @@ chars[0] = Character{
 };
 ```
 Now the above array has an undefined value on index 1. If we try to access this struct or its attributes we are going to get some random "garbage" values.
+
+---
 
 39. (-43) pointers
 
@@ -540,9 +582,13 @@ if (c.mentor) |mentor| {
 }
 ```
 
+---
+
 44. Quiz5
 
 Quicky introduction of linked lists, by elephants holding tails -- cute.
+
+---
 
 45. (-46) optionals
 
@@ -568,6 +614,8 @@ The optionals are similar to union of error!type variable.
 var maybe_bad: Error!u32 = Error.Evil;
 var number: u32 = maybe_bad catch 0;
 ```
+
+---
 
 46. (-47) methods
 
@@ -658,9 +706,13 @@ pub const FileExt = enum {
 };
 ```
 
+---
+
 50. Quiz 6
 
 We are finally writing something ourselves. Just replicate the tail methods and you're good. Also, I managed to finally turn on vim zig and markdown highlighting -- noice.
+
+---
 
 51. no value
 
@@ -716,6 +768,8 @@ We are finally writing something ourselves. Just replicate the tail methods and 
 //   * errors    - there is no value because something went wrong
 //   * void      - there will NEVER be a value stored here
 ```
+
+---
 
 51. values (or how memory works for stuff)
 
@@ -841,6 +895,8 @@ We can also manipulate strings, which after all are arrays too. IMMUTABLE arrays
 const scrambled = "some string hey";
 const part1: []const u8 = scrambled[0..10];
 ```
+
+---
 
 53. manypointers
 
