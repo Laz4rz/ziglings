@@ -900,7 +900,7 @@ const part1: []const u8 = scrambled[0..10];
 
 53. manypointers
 
-Dont't worry if you feel a little lost here. I was too, it's ok. Just read it a word at a time and rewrite in your own words whatever you don't understand.
+Don't worry if you feel a little lost here. I was too, it's ok. Just read it a word at a time and rewrite in your own words whatever you don't understand.
 
 Coercing is, usually automatic and implicit, conversion of one type to another. For example when you print an int in Python (I guess its converted from int to string, im not 100% but you get the gist). 
 
