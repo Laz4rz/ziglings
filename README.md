@@ -838,6 +838,90 @@ const scrambled = "some string hey";
 const part1: []const u8 = scrambled[0..10];
 ```
 
+53. manypointers
 
+Dont't worry if you feel a little lost here. I was to, it's ok. Just read it a word at a time and rewrite in your own words whatever you don't understand.
+
+Coercing is, usually automatic and implicit, conversion of one type to another. For example when you print an int in Python (I guess its converted from int to string, im not 100% but you get the gist). 
+
+```zig
+var foo: [4]u8: [4]u8{1, 2, 3, 4};
+var foo_regular_ptr: *[4]u8 = &foo;
+var foo_slice: []u8 = foo[0..];
+var foo_ptr: [*]u8 = &foo;
+var foo_slice_from_ptr: []u8 = foo_ptr[0..4];
+```
+
+You may now be thinking "what the fuck". Bear with me. Regular pointer (`*[5]u8`) can be used for arrays of known sizes, it's aware of the array length, therefore it's safe but less flexible. Manypointer (`[*]u8`) does not know about the length, more than that, this ignorance allows more flexibility, but you need to be cautious. Compiler will not throw an error when you try to access out-of-bounds elements.
+
+```zig
+var arr: [5]u8 = [_]u8{1, 2, 3, 4, 5};
+
+// Regular array pointer
+var regular_ptr: *[5]u8 = &arr;
+_ = regular_ptr[4]; // Safe, bounds-checked
+// _ = regular_ptr[5]; // This would be a compile-time error
+
+// Many-item pointer
+var many_ptr: [*]u8 = &arr;
+_ = many_ptr[4]; // Works, but not bounds-checked
+_ = many_ptr[5]; // This compiles but could lead to undefined behavior
+```
+
+Also, note that when we create `foo_slice_from_ptr`, we specify the length by `[0..4]`. It may result in accessing out of bounds memory, because we need to be in control of the array length. The pointer does not know the length, so we could write `&arr[0..5]` and it would pass compilation, but access memory it shouldn't access, cause `arr` has only 4 elements.
+
+In principle the main difference between the regular pointer, manypointer, and slice is:
+- regular: known length, forces you to adhere to this length and doesnt allow arbitrary lengths
+- manypointer: unknown length, will do whatever you ask it to do, but you need to be in control of the correct index access, cause you can get out-of-bands
+- slice: arbitrary length, you will be kept in bounds by compiler
+
+It may help to think of these pointers/slices as structs, for example slice could be defined as:
+
+```zig
+const slice = struct {
+    ptr: [*]T,  // manypointer to an array containing elements of some type T
+    len: usize, // remember for lengths we use usize, its size is CPU dependent
+}
+```
+
+Now getting to the exercise:
+
+```zig
+// this is a constant pointer to a 21 u8 characters long array
+// it does not allow mutating the array -- *const
+const zen12: *const [21]u8 = "Memory is a resource";
+// it would also be valid to set the type to a slice
+// this will not work in the exercise tho
+// you would need to then get a pointer to its
+// first element
+const zen12: []const u8 = "Memory is a resource";
+
+const zen_manyptr: [*]const u8 = zen12;
+// ...
+
+// we now create a slice out of it
+// remember that slice demands some known size
+// this is why we add the indexing, we have to 
+// know the valid indexes tho, so we don't get
+// out-of-bounds
+const zen12_string: []const u8 = zen_manyptr[0..21]
+```
+
+Cheat sheet from the exercise:
+
+```zig
+//     FREE ZIG POINTER CHEATSHEET! (Using u8 as the example type.)
+//   +---------------+----------------------------------------------+
+//   |  u8           |  one u8                                      |
+//   |  *u8          |  pointer to one u8                           |
+//   |  [2]u8        |  two u8s                                     |
+//   |  [*]u8        |  pointer to unknown number of u8s            |
+//   |  [*]const u8  |  pointer to unknown number of immutable u8s  |
+//   |  *[2]u8       |  pointer to an array of 2 u8s                |
+//   |  *const [2]u8 |  pointer to an immutable array of 2 u8s      |
+//   |  []u8         |  slice of u8s                                |
+//   |  []const u8   |  slice of immutable u8s                      |
+//   +---------------+----------------------------------------------+
+```
 
 
