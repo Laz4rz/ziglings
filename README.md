@@ -16,6 +16,8 @@ fn name() return_type {
 
 The functions are private by default, and can be made public by putting `pub` before `fn`. The main has to be explicitly made public.
 
+---
+
 2. Std
 
 Importing is done using:
@@ -30,6 +32,8 @@ Zig allows both `const` and `var` variables. Some things have to be immutable, i
 Above is why you can define imports as `var`, and if you never use them the compiler will not throw an error.
 
 More about evaluating and compiler checking: https://stackoverflow.com/questions/62554187/struct-definition-with-var-instead-of-const-in-zig-language/62567550#62567550
+
+---
 
 3. Assignment
 
