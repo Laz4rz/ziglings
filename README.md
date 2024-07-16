@@ -964,7 +964,7 @@ const zen_manyptr: [*]const u8 = zen12;
 // this is why we add the indexing, we have to 
 // know the valid indexes tho, so we don't get
 // out-of-bounds
-const zen12_string: []const u8 = zen_manyptr[0..21]
+const zen12_string: []const u8 = zen_manyptr[0..21];
 ```
 
 Cheat sheet from the exercise:
