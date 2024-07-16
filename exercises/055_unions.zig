@@ -42,7 +42,7 @@ const std = @import("std");
 // Insects will be represented by either bees or ants. Bees store
 // the number of flowers they've visited that day and ants just
 // store whether or not they're still alive.
-const Insect = union {
+const Insect = union(enum) {
     flowers_visited: u16,
     still_alive: bool,
 };
@@ -59,18 +59,26 @@ pub fn main() void {
     std.debug.print("Insect report! ", .{});
 
     // Oops! We've made a mistake here.
-    printInsect(ant, AntOrBee.c);
-    printInsect(bee, AntOrBee.c);
+    //printInsect(ant, AntOrBee.a);
+    //printInsect(bee, AntOrBee.b);
 
+    printInsect(ant);
+    printInsect(bee);
     std.debug.print("\n", .{});
 }
 
 // Eccentric Doctor Zoraptera says that we can only use one
 // function to print our insects. Doctor Z is small and sometimes
 // inscrutable but we do not question her.
-fn printInsect(insect: Insect, what_it_is: AntOrBee) void {
-    switch (what_it_is) {
-        .a => std.debug.print("Ant alive is: {}. ", .{insect.still_alive}),
-        .b => std.debug.print("Bee visited {} flowers. ", .{insect.flowers_visited}),
+//fn printInsect(insect: Insect, what_it_is: AntOrBee) void {
+//    switch (what_it_is) {
+//        .a => std.debug.print("Ant alive is: {}. ", .{insect.still_alive}),
+//        .b => std.debug.print("Bee visited {} flowers. ", .{insect.flowers_visited}),
+//    }
+//}
+fn printInsect(insect: Insect) void {
+    switch (insect) {
+        .still_alive => std.debug.print("Ant alive is: {}. ", .{insect.still_alive}),
+        .flowers_visited => std.debug.print("Bee visited {} flowers. ", .{insect.flowers_visited}),
     }
 }
