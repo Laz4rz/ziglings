@@ -984,4 +984,114 @@ Cheat sheet from the exercise:
 //   +---------------+----------------------------------------------+
 ```
 
+---
+
+55. (-57) unions
+
+Type union allows storing any of the union types on the same memory address. It does that by reserving the largest union type. You can create an union of types, by -- surprise, surprise -- an union (it looks like a struct, but doesn't duck like a struct). 
+
+```zig
+const Foonion = union {
+    small: u8,
+    medium: u32, 
+    large: u64,
+}
+```
+
+Quiz time. What's the in-memory size for this union struct? You guessed it -- u64. Even though union syntax is basically a struct, you can only initialize it with a single field. If you then try to access other fields, you will get an error. 
+
+```zig
+var f = Foo{ .small = 5 };
+f.small += 5;                  // OKAY
+f.medium = 5432;               // ERROR!
+f = Foo{ .medium = 5432 };     // OKAY
+```
+
+Counterintuitively, unions CAN be used to save space, by re-using space in memory. Instead of creating variables for each possible type, you create a variable of union type. It also introduces a primitive polymorphism (polymorphism is the ability of different types to be treated as instances of the same class through a common interface, ie numbers going to a printing function that takes Number type).
+
+```zig
+const Number = union(enum) {
+    Int: i32,
+    Float: f32,
+};
+
+fn printNumber(num: Number) void {
+    switch (num) {
+        .Int => |i| std.debug.print("Integer: {}\n", .{i}),
+        .Float => |f| std.debug.print("Float: {}\n", .{f}),
+    }
+}
+```
+
+The 55 can be done with a separate enum (above we used a slightly more nuanced syntax, but we can just create an enum, and pass it together to a function).
+
+a). separate enum
+```zig
+const Insect = union {
+    flowers_visited: u16,
+    still_alive: bool,
+};
+const AntOrBee = enum { a, b };
+const ant = Insect{ .still_alive = true };
+const bee = Insect{ .flowers_visited = 15 };
+printInsect(ant, AntOrBee.a);
+printInsect(bee, AntOrBee.b);
+
+// and printing function
+fn printInsect(insect: Insect, what_it_is: AntOrBee) void {
+    switch (what_it_is) {
+        .a => std.debug.print("Ant alive is: {}. ", .{insect.still_alive}),
+        .b => std.debug.print("Bee visited {} flowers. ", .{insect.flowers_visited}),
+    }
+}
+```
+
+b). backed in enum
+```zig
+const Insect = union(enum) {
+    flowers_visited: u16,
+    still_alive: bool,
+};
+const ant = Insect{ .still_alive = true };
+const bee = Insect{ .flowers_visited = 15 };
+printInsect(ant);
+printInsect(bee);
+
+// and printing function
+fn printInsect(insect: Insect) void {
+    switch (insect) {
+        .still_alive => std.debug.print("Ant alive is: {}. ", .{insect.still_alive}),
+        .flowers_visited => std.debug.print("Bee visited {} flowers. ", .{insect.flowers_visited}),
+    }
+}
+```
+
+In 56 we are asked to create and enum with fields specifically same as in the union. So you could do it both ways. You can do it either explicit (if you need the enum somewehere else) or implicit:
+
+Explicit:
+
+```zig
+const InsectStat = enum { flowers_visited, still_alive };
+
+const Insect = union(InsectStat) {
+    flowers_visited: u16,
+    still_alive: bool,
+};
+```
+
+And implicit:
+
+```zig
+const Insect = union(enum) {
+    flowers_visited: u16,
+    still_alive: bool,
+};
+```
+
+Btw. Optional values we've seen previously are basically null unions, and errors are error unions.
+
+---
+
+58. Quiz7
+
 
